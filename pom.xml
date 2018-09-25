@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.sinnerschrader.aem.react</groupId>
-        <artifactId>aem-react</artifactId>
-        <version>0.24.2.13-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+        
+    <groupId>com.sinnerschrader.aem.react</groupId>
     <artifactId>jdk-nashorn-fragment</artifactId>
+    <version>0.24.2.13-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>jdk nashorn fragment</name>
+
+    <url>https://www.github.com/sinnerschrader/jdk-nashorn-fragment-bundle</url>
+    <licenses>
+        <license>
+            <name>MIT</name>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git://github.com/sinnerschrader/jdk-nashorn-fragment-bundle.git</connection>
+        <developerConnection>scm:git:git@github.com:sinnerschrader/jdk-nashorn-fragment-bundle.git</developerConnection>
+        <url>https://github.com/sinnerschrader/jdk-nashorn-fragment-bundle.git</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <gpg.skip>true</gpg.skip>
+    </properties>
 
     <build>
         <plugins>
@@ -45,6 +62,59 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <!-- maven-gpg-plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- nexus-staging-maven-plugin -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <!-- Maven Release Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <scmCommentPrefix>[maven-scm] :</scmCommentPrefix>
+                    <preparationGoals>clean install</preparationGoals>
+                    <goals>install</goals>
+                    <releaseProfiles>release</releaseProfiles>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>sonatype-nexus-staging</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
