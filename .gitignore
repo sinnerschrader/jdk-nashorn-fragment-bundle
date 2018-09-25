@@ -1,0 +1,12 @@
+target
+*.versionsBackup
+*.xml.releaseBackup
+
+# Eclipse
+.settings
+.project
+.classpath
+
+# IntelliJ
+.idea
+*.iml
